@@ -155,4 +155,6 @@ console.log(chunk([1, 2, 3, 4], 3)) // [[1, 2, 3], [4]]
 ```
 
 # 最后
-这样一步一步的分析,其实也不(tai)难(nan)。从网上参考了一些资料,对我解读源码有很大的帮助。最后由衷的感谢：[lodash源码解析——chunk函数](https://segmentfault.com/a/1190000012025488#articleHeader2)这篇文章对我的帮助,写的通俗易懂
+这样一步一步的分析,其实也不(tai)难(nan)。从网上参考了一些资料,对我解读源码有很大的帮助。
+
+参考资料：[lodash源码解析——chunk函数](https://segmentfault.com/a/1190000012025488#articleHeader2)
