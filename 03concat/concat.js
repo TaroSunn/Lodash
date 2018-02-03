@@ -12,11 +12,6 @@
 //   return arrayPush(isArray(array) ? copyArray(array) : [array], baseFlatten(args, 1))
 // }
 
-/*  分析
- * 如果数组1 [1,2,3,4] 数组2 [1,2,3,4] => [1,2,3,4,1,2,3,4]
- * 需要循环
- * 
-*/
 
 function arrayPush (array, values) {
   var index = -1, // 
