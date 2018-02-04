@@ -132,6 +132,7 @@ console.log(values,array)
           length = source.length;
 
       array || (array = Array(length));
+      
       while (++index < length) {
         array[index] = source[index];
       }
@@ -139,3 +140,66 @@ console.log(values,array)
     }
 
 ```
+这个函数与上一个差不多,就不过多赘述了.
+
+#### baseFlatten()
+
+数组扁平化
+
+举个例子
+```
+var array = [1,2,3[4]]
+baseFlatten(array,1)
+// =>[1,2,3,4]
+```
+
+先观察一下源码
+
+```
+/**
+     * The base implementation of `_.flatten` with support for restricting flattening.
+     *
+     * @private
+     * @param {Array} array The array to flatten.
+     * @param {number} depth The maximum recursion depth.
+     * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+     * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
+     * @param {Array} [result=[]] The initial result value.
+     * @returns {Array} Returns the new flattened array.
+     */
+    function baseFlatten(array, depth, predicate, isStrict, result) {
+      var index = -1,
+          length = array.length;
+
+      predicate || (predicate = isFlattenable);
+      result || (result = []);
+
+      while (++index < length) {
+        var value = array[index];
+        if (depth > 0 && predicate(value)) {
+          if (depth > 1) {
+            // Recursively flatten arrays (susceptible to call stack limits).
+            baseFlatten(value, depth - 1, predicate, isStrict, result);
+          } else {
+            arrayPush(result, value);
+          }
+        } else if (!isStrict) {
+          result[result.length] = value;
+        }
+      }
+      return result;
+    }
+```
+##### 分析一哈
+1. ``baseFlatten()`` 有5个参数
+  >1. 参数1: ``array`` 需要扁平化的数组
+  >2. 参数2: ``depth`` 扁平化的深度
+  >3. 参数3: ``predicate`` 结合上下文此处传入的是一个函数,如果没传则调用``isFlattenable()``,这个后面介绍
+  >4. 参数4: ``isStrict`` 是否进行``predicate`` 检查
+  >5. 参数5: ``result`` 结果
+
+2. 定义一个变量 ``index`` 记录索引,初始值为-1. 定义一个变量``length``,它的值是需要扁平化的数组的长度
+3. 如果传了``predicate``参数,那么就用传入的这个函数,如果没传就使用``isFlattenable``这个函数,这个函数的作用是: 判断传入的数据是不是可以扁平化的数组、对象或 ``arguments``
+4. 如果没传``result``这个参数,那么会把``result``赋值为一个数组
+5. ``while``循环中,递归调用了``baseFlatten()``.举个例子,假如要扁平化的数组是``[1,[2,[3,[4]]]]``
+
